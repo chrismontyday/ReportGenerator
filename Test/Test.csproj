@@ -15,4 +15,7 @@
     <!--<PackageReference Include="USFS.Library.TestAutomation" Version="2020.9.22.1743" />-->
     <PackageReference Include="USFS.Library.TestAutomation" Version="2020.10.9.705" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Config\" />
+  </ItemGroup>
 </Project>

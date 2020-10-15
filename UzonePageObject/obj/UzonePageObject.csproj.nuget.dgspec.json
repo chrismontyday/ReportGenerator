@@ -49,6 +49,14 @@
               "target": "Package",
               "version": "[2.0.3, )",
               "autoReferenced": true
+            },
+            "Selenium.Support": {
+              "target": "Package",
+              "version": "[3.141.0, )"
+            },
+            "USFS.Library.TestAutomation": {
+              "target": "Package",
+              "version": "[2020.9.22.1743, )"
             }
           },
           "imports": [

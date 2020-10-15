@@ -1,0 +1,4 @@
+{
+  "URL": "https://yourtime.unitedshore.com/",
+  "ConnectionString": "Data Source=S01VPSSQLCL002\\Shore2;Initial Catalog=Yourtime;Integrated Security=true;"
+}

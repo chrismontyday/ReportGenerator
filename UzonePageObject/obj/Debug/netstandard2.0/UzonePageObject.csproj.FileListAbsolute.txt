@@ -1,8 +1,0 @@
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\bin\Debug\netstandard2.0\UzonePageObject.deps.json
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\bin\Debug\netstandard2.0\UzonePageObject.dll
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\bin\Debug\netstandard2.0\UzonePageObject.pdb
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\obj\Debug\netstandard2.0\UzonePageObject.AssemblyInfoInputs.cache
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\obj\Debug\netstandard2.0\UzonePageObject.AssemblyInfo.cs
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\obj\Debug\netstandard2.0\UzonePageObject.csproj.CoreCompileInputs.cache
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\obj\Debug\netstandard2.0\UzonePageObject.dll
-C:\Code\BB\testautomation-ui-uzone\UzonePageObject\obj\Debug\netstandard2.0\UzonePageObject.pdb

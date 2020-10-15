@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Code\\testautomation-ui-uzone\\UzonePageObject\\UzonePageObject.csproj",
+      "projectUniqueName": "C:\\code\\BB\\testautomation-ui-uzone\\UzonePageObject\\UzonePageObject.csproj",
       "projectName": "UzonePageObject",
-      "projectPath": "C:\\Code\\testautomation-ui-uzone\\UzonePageObject\\UzonePageObject.csproj",
+      "projectPath": "C:\\code\\BB\\testautomation-ui-uzone\\UzonePageObject\\UzonePageObject.csproj",
       "packagesPath": "C:\\Users\\rrajendran\\.nuget\\packages\\",
-      "outputPath": "C:\\Code\\testautomation-ui-uzone\\UzonePageObject\\obj\\",
+      "outputPath": "C:\\code\\BB\\testautomation-ui-uzone\\UzonePageObject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Code\\testautomation-ui-uzone\\Test\\Test.csproj": {}
+    "C:\\Code\\BB\\testautomation-ui-uzone\\Test\\Test.csproj": {}
   },
   "projects": {
-    "C:\\Code\\testautomation-ui-uzone\\Test\\Test.csproj": {
+    "C:\\Code\\BB\\testautomation-ui-uzone\\Test\\Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Code\\testautomation-ui-uzone\\Test\\Test.csproj",
+        "projectUniqueName": "C:\\Code\\BB\\testautomation-ui-uzone\\Test\\Test.csproj",
         "projectName": "Test",
-        "projectPath": "C:\\Code\\testautomation-ui-uzone\\Test\\Test.csproj",
+        "projectPath": "C:\\Code\\BB\\testautomation-ui-uzone\\Test\\Test.csproj",
         "packagesPath": "C:\\Users\\rrajendran\\.nuget\\packages\\",
-        "outputPath": "C:\\Code\\testautomation-ui-uzone\\Test\\obj\\",
+        "outputPath": "C:\\Code\\BB\\testautomation-ui-uzone\\Test\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

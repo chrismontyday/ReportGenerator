@@ -3617,6 +3617,20 @@
         "runtime": {
           "lib/netstandard2.0/USFS.Library.TestAutomation.dll": {}
         }
+      },
+      "UzonePageObject/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Selenium.Support": "3.141.0",
+          "USFS.Library.TestAutomation": "2020.10.9.705"
+        },
+        "compile": {
+          "bin/placeholder/UzonePageObject.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/UzonePageObject.dll": {}
+        }
       }
     }
   },
@@ -11092,6 +11106,11 @@
         "usfs.library.testautomation.2020.10.9.705.nupkg.sha512",
         "usfs.library.testautomation.nuspec"
       ]
+    },
+    "UzonePageObject/1.0.0": {
+      "type": "project",
+      "path": "../UzonePageObject/UzonePageObject.csproj",
+      "msbuildProject": "../UzonePageObject/UzonePageObject.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -11103,7 +11122,8 @@
       "NUnit3TestAdapter >= 3.17.0",
       "Selenium.Support >= 3.141.0",
       "Selenium.WebDriver.ChromeDriver >= 81.0.4044.13800",
-      "USFS.Library.TestAutomation >= 2020.10.9.705"
+      "USFS.Library.TestAutomation >= 2020.10.9.705",
+      "UzonePageObject >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -11138,7 +11158,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Code\\BB\\testautomation-ui-uzone\\UzonePageObject\\UzonePageObject.csproj": {
+              "projectPath": "C:\\Code\\BB\\testautomation-ui-uzone\\UzonePageObject\\UzonePageObject.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

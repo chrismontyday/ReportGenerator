@@ -56,7 +56,7 @@
             },
             "USFS.Library.TestAutomation": {
               "target": "Package",
-              "version": "[2020.9.22.1743, )"
+              "version": "[2020.10.9.705, )"
             }
           },
           "imports": [

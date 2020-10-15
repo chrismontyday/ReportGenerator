@@ -2523,7 +2523,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XmlDocument.dll": {}
         }
       },
-      "USFS.Library.TestAutomation/2020.9.22.1743": {
+      "USFS.Library.TestAutomation/2020.10.9.705": {
         "type": "package",
         "dependencies": {
           "AutoItX.Dotnet": "3.3.14.5",
@@ -8218,15 +8218,15 @@
         "system.xml.xpath.xmldocument.nuspec"
       ]
     },
-    "USFS.Library.TestAutomation/2020.9.22.1743": {
-      "sha512": "SqgDky9PiNpJ+r0D5Q1nO/TD8cTYwqSYW+OuX71XdDbl+cuZGD5MPYno31PJ7c6gtVfbsXFcWFfaG3Va+DizyA==",
+    "USFS.Library.TestAutomation/2020.10.9.705": {
+      "sha512": "mneRv8chNiFJBe6hOEpLrrm9uKwOjLT9+o3fV2YrGlogZPAHn/rrAWq6O1fvzD8eK+ALihJipH4COsx0uUJoeg==",
       "type": "package",
-      "path": "usfs.library.testautomation/2020.9.22.1743",
+      "path": "usfs.library.testautomation/2020.10.9.705",
       "files": [
         ".nupkg.metadata",
         "lib/net462/USFS.Library.TestAutomation.dll",
         "lib/netstandard2.0/USFS.Library.TestAutomation.dll",
-        "usfs.library.testautomation.2020.9.22.1743.nupkg.sha512",
+        "usfs.library.testautomation.2020.10.9.705.nupkg.sha512",
         "usfs.library.testautomation.nuspec"
       ]
     }
@@ -8235,7 +8235,7 @@
     ".NETStandard,Version=v2.0": [
       "NETStandard.Library >= 2.0.3",
       "Selenium.Support >= 3.141.0",
-      "USFS.Library.TestAutomation >= 2020.9.22.1743"
+      "USFS.Library.TestAutomation >= 2020.10.9.705"
     ]
   },
   "packageFolders": {
@@ -8294,7 +8294,7 @@
           },
           "USFS.Library.TestAutomation": {
             "target": "Package",
-            "version": "[2020.9.22.1743, )"
+            "version": "[2020.10.9.705, )"
           }
         },
         "imports": [

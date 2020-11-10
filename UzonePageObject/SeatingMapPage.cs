@@ -1,17 +1,15 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading;
+using USFS.Library.TestAutomation;
+using Serilog;
 
 namespace UzonePageObject
 {
-    public class SeatingMapPage 
+    public class SeatingMapPage : BasePage
     {
-        public IWebDriver WebDriver;
-        public WebDriverWait Wait { get { return new WebDriverWait(WebDriver, TimeSpan.FromSeconds(60)); } }
+        //public IWebDriver Driver;
+        public WebDriverWait Wait { get { return new WebDriverWait(Driver, TimeSpan.FromSeconds(60)); } }
         public UtilityHelper util = new UtilityHelper();
 
         //Takes screenshot of Team Member's seating location on seating map. 
@@ -27,34 +25,35 @@ namespace UzonePageObject
 
             try
             {
-                WebDriver.Navigate().GoToUrl("https://uzone.unitedshore.com/map/#/map/51");
+                Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/map/#/map/51");
                 Wait.Until(d => d.FindElement(searchBox).Displayed);
-                WebDriver.FindElement(searchBox).Click();
-                WebDriver.FindElement(searchSeatMap).SendKeys(tm.Name);
-                WebDriver.FindElement(searchSeatMap).SendKeys(Keys.Enter);
+                Driver.FindElement(searchBox).Click();
+                Driver.FindElement(searchSeatMap).SendKeys(tm.Name);
+                Driver.FindElement(searchSeatMap).SendKeys(Keys.Enter);
 
                 if (WaitForVisible(noMatch) || !WaitForVisible(fullScreen))
                 {
                     //If Team Member does not have personal seating map. This re-routes to generic map. 
-                    WebDriver.Navigate().Refresh();
+                    Driver.Navigate().Refresh();
                     Wait.Until(d => d.FindElement(mapSelect));
-                    WebDriver.FindElement(mapSelect).Click();
-                    WebDriver.FindElement(mapSelect).SendKeys(tm.Location);
-                    WebDriver.FindElement(mapSelect).SendKeys(Keys.Enter);
+                    Driver.FindElement(mapSelect).Click();
+                    Driver.FindElement(mapSelect).SendKeys(tm.Location);
+                    Driver.FindElement(mapSelect).SendKeys(Keys.Enter);
                 }
                 else
                 {
-                    WebDriver.FindElement(fullScreen).Click();
+                    Driver.FindElement(fullScreen).Click();
                 }
 
                 Wait.Until(d => d.FindElement(seatingMap).Displayed);
-                IWebElement map = WebDriver.FindElement(seatingMap);
-                tm.MapFilePath = util.TakeScreenshotOfElement(WebDriver, map, tm.Name, tm.Location, tm.Id, false);
+                IWebElement map = Driver.FindElement(seatingMap);
+                tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Location, tm.Id, false);
 
             }
             catch (Exception)
             {
-                Console.WriteLine("Failure occured in GetTeamMemberSeatingMap()"); ;
+                Log.Information("Automation in GetTeamMemberSeatingMap() has failed");
+
             }
         }
 
@@ -65,7 +64,7 @@ namespace UzonePageObject
 
             try
             {
-                WebDriver.FindElement(path);
+                Driver.FindElement(path);
                 isVisible = true;
             }
             catch (Exception)

@@ -1,17 +1,15 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Threading;
+using USFS.Library.TestAutomation;
+using Serilog;
 
 namespace UzonePageObject
 {
-    public class ProfilePage 
+    public class ProfilePage : BasePage
     {
-        public IWebDriver WebDriver;
-        public WebDriverWait Wait { get { return new WebDriverWait(WebDriver, TimeSpan.FromSeconds(60)); } }
+        //public IWebDriver Driver;
+        public WebDriverWait Wait { get { return new WebDriverWait(Driver, TimeSpan.FromSeconds(60)); } }
         public UtilityHelper util = new UtilityHelper();
 
         public void GetTeamMemberPhoto(TeamMember tm)
@@ -26,25 +24,25 @@ namespace UzonePageObject
 
             try
             {
-                WebDriver.Navigate().GoToUrl("https://uzone.unitedshore.com/");
+                Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/");
                 Wait.Until(d => d.FindElement(UWMButton).Displayed);
-                WebDriver.FindElement(UWMButton).Click();
+                Driver.FindElement(UWMButton).Click();
                 Wait.Until(d => d.FindElement(allPeopleButton).Displayed);
-                WebDriver.FindElement(allPeopleButton).Click();
+                Driver.FindElement(allPeopleButton).Click();
                 Wait.Until(d => d.FindElement(search).Displayed);
-                WebDriver.FindElement(search).Click();
-                WebDriver.FindElement(search).SendKeys(tm.Name);
-                WebDriver.FindElement(search).SendKeys(Keys.Enter);
+                Driver.FindElement(search).Click();
+                Driver.FindElement(search).SendKeys(tm.Name);
+                Driver.FindElement(search).SendKeys(Keys.Enter);
 
                 //If Team Member's profile can not be found via search this changes their name to null so they can be removed from the list. 
                 if (WaitForVisible(profileLink) || !WaitForVisible(noProfile))
                 {
-                    WebDriver.FindElement(profileLink).Click();
+                    Driver.FindElement(profileLink).Click();
                     Wait.Until(d => d.FindElement(image).Displayed);
-                    tm.PhotoPath = WebDriver.FindElement(image).GetAttribute("img");
-                    WebDriver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
-                    IWebElement photo = WebDriver.FindElement(profilePicture);
-                    tm.PhotoFilePath = util.TakeScreenshotOfElement(WebDriver, photo, tm.Name, tm.Location, tm.Id, true);
+                    tm.PhotoPath = Driver.FindElement(image).GetAttribute("img");
+                    Driver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
+                    IWebElement photo = Driver.FindElement(profilePicture);
+                    tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Location, tm.Id, true);
                 }
                 else
                 {
@@ -54,7 +52,7 @@ namespace UzonePageObject
             }
             catch (Exception)
             {
-                Console.WriteLine("Failure occured in GetTeamMemberPhoto()");
+                Log.Information("Automation in GetTeamMemberPhoto() has failed");
             }
         }
 
@@ -65,7 +63,7 @@ namespace UzonePageObject
 
             try
             {
-                WebDriver.FindElement(path);
+                Driver.FindElement(path);
                 isVisible = true;
             }
             catch (Exception)

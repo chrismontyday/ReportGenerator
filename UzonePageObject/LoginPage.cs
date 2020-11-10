@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using System.Threading;
 using USFS.Library.TestAutomation;
-using USFS.Library.TestAutomation.Util;
 
 namespace UzonePageObject
 {

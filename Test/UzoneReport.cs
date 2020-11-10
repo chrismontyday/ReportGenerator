@@ -6,7 +6,8 @@ using USFS.Library.TestAutomation;
 using USFS.Library.TestAutomation.Test;
 using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
-
+using ExcelConnect;
+using System.Linq;
 
 namespace Test
 {
@@ -20,8 +21,10 @@ namespace Test
         private ProfilePage profilePage;
         private SeatingMapPage seatingMap;
         UtilityHelper auto = new UtilityHelper();
+        GenerateReports doc = new GenerateReports();
         ExcelConnection excel;
-        List<TeamMember> list; 
+
+        List<TeamMember> list;
 
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -35,6 +38,8 @@ namespace Test
             excel = new ExcelConnection();
             list = PopulateTeamMemberList();
             loginPage = new LoginPage();
+            profilePage = new ProfilePage();
+            seatingMap = new SeatingMapPage();           
             BasePage.StartBrowser(config[keyBrowserChoice], config[keyBrowserMode], config[keyResourceUsed]);
         }
 
@@ -42,10 +47,11 @@ namespace Test
         public void UzoneReportGeneration()
         {
             //Login
-            LoginUzoneTest();
+            //LoginUzoneTest();
             //Goto seatingmap and take screenshot
             GetPicsFromUzone(list);
             //Create report in word format
+            doc.CreateDocument(RemoveAllNullTM(list));
         }
 
         public void LoginUzoneTest()
@@ -70,21 +76,32 @@ namespace Test
 
         public void GetPicsFromUzone(List<TeamMember> list)
         {
-            auto.SetUpWebDriver();
 
-            foreach (TeamMember tm in list)
+            try
             {
-                if (tm.Name != "Leader" && tm.Name != null)
+                Log.Information("GetPicsFromUzone() has started");
+                foreach (TeamMember tm in list)
                 {
-                    profilePage.GetTeamMemberPhoto(tm);
-
-                    if (tm.Name != null)
+                    Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
+                    if (tm.Name != "Leader" && tm.Name != null)
                     {
-                        seatingMap.GetTeamMemberSeatingMap(tm);
+                        profilePage.GetTeamMemberPhoto(tm);
+
+                        if (tm.Name != null)
+                        {
+                            seatingMap.GetTeamMemberSeatingMap(tm);
+                        }
                     }
+                    Log.Information("Success! - " + tm.Id);
                 }
+
             }
-            auto.TeardownWebDriver();
+            catch (Exception e)
+            {
+                Log.Error(e, "GetPicsFromUzone() has Failed");
+                throw new Exception("GetPicsFromUzone() Failed", e);
+            }
+
         }
 
         public List<TeamMember> PopulateTeamMemberList()
@@ -93,6 +110,19 @@ namespace Test
             excel.CloseWorkbook();
             return list;
         }
+
+        public List<TeamMember> RemoveAllNullTM(List<TeamMember> list)
+        {
+
+            var item = list.SingleOrDefault(x => x.Name == null);
+            if (item != null)
+            {
+                list.Remove(item);
+            }
+
+            return list;
+        }
+
     }
 }
 

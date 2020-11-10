@@ -4,7 +4,8 @@ using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace Test
+namespace ExcelConnect
+
 {
     public class ExcelConnection
     {
@@ -29,7 +30,7 @@ namespace Test
 
             for (int row = 2; row < xlRange.Rows.Count + 1; row++)
             {
-                if (xlRange.Cells[row, 1] != null && xlRange.Cells[row, 1] != "0")
+                if (xlRange.Cells[row, 1] != null)
                 {
                     TeamMember teamMember = new TeamMember()
                     {

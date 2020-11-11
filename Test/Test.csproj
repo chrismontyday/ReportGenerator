@@ -5,7 +5,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
     <PackageReference Include="ExtentReports" Version="4.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="Microsoft.TestPlatform" Version="16.7.1" />
@@ -13,6 +12,7 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="85.0.4183.8700" />
+    <PackageReference Include="Spire.Doc" Version="8.10.4" />
     <!--<PackageReference Include="USFS.Library.TestAutomation" Version="2020.9.22.1743" />-->
     <PackageReference Include="USFS.Library.TestAutomation" Version="2020.10.9.705" />
   </ItemGroup>

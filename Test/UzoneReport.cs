@@ -32,8 +32,7 @@ namespace Test
             list = PopulateTeamMemberList();
             loginPage = new LoginPage();
             profilePage = new ProfilePage();
-            seatingMap = new SeatingMapPage();
-           
+            seatingMap = new SeatingMapPage();           
             BasePage.StartBrowser(config[keyBrowserChoice], config[keyBrowserMode], config[keyResourceUsed]);            
         }
 
@@ -76,7 +75,6 @@ namespace Test
 
         public void GetPicsFromUzone(List<TeamMember> list)
         {
-
             try
             {
                 Log.Information("GetPicsFromUzone() has started");
@@ -94,14 +92,12 @@ namespace Test
                     }
                     Log.Information("Success! - " + tm.Id);
                 }
-
             }
             catch (Exception e)
             {
                 Log.Error(e, "GetPicsFromUzone() has Failed");
                 throw new Exception("GetPicsFromUzone() Failed", e);
             }
-
         }
 
         //Creates a List<TeamMember> from Excel Sheet.

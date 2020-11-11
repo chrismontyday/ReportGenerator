@@ -20,17 +20,10 @@ namespace Test
         private LoginPage loginPage;
         private ProfilePage profilePage;
         private SeatingMapPage seatingMap;
-        UtilityHelper auto = new UtilityHelper();
         GenerateReports doc = new GenerateReports();
         ExcelConnection excel;
 
         List<TeamMember> list;
-
-        [OneTimeSetUp]
-        public void OneTimeSetup()
-        {
-
-        }
 
         [SetUp]
         public void SetUp()
@@ -39,15 +32,22 @@ namespace Test
             list = PopulateTeamMemberList();
             loginPage = new LoginPage();
             profilePage = new ProfilePage();
-            seatingMap = new SeatingMapPage();           
-            BasePage.StartBrowser(config[keyBrowserChoice], config[keyBrowserMode], config[keyResourceUsed]);
+            seatingMap = new SeatingMapPage();
+           
+            BasePage.StartBrowser(config[keyBrowserChoice], config[keyBrowserMode], config[keyResourceUsed]);            
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            BasePage.CloseBrowser();            
         }
 
         [Test]
         public void UzoneReportGeneration()
         {
             //Login
-            //LoginUzoneTest();
+            LoginUzoneTest();
             //Goto seatingmap and take screenshot
             GetPicsFromUzone(list);
             //Create report in word format
@@ -104,6 +104,7 @@ namespace Test
 
         }
 
+        //Creates a List<TeamMember> from Excel Sheet.
         public List<TeamMember> PopulateTeamMemberList()
         {
             list = excel.GetTeamMembers();
@@ -111,6 +112,7 @@ namespace Test
             return list;
         }
 
+        //Removes TeamMember from List whose Name is null. 
         public List<TeamMember> RemoveAllNullTM(List<TeamMember> list)
         {
 

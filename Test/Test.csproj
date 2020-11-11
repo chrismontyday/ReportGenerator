@@ -18,6 +18,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="Reports\" />
+    <Folder Include="TestOutput\Screenshots\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ExcelConnection\ExcelConnect.csproj" />

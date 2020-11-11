@@ -33,7 +33,7 @@ namespace UzonePageObject
             screenshot = screenshot.Clone(croppedImage, screenshot.PixelFormat);
             //string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"TestOutput\");
 
-            string path = ReturnPathFolder();
+            string path = ReturnPathFolder(3, "TestOutput\\Screenshots");
 
             screenshot.Save(path + fileName + fileType, ImageFormat.Jpeg);
 

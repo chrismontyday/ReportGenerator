@@ -28,15 +28,12 @@ namespace UzonePageObject
             }
 
             Byte[] byteArray = ((ITakesScreenshot)driver).GetScreenshot().AsByteArray;
-            Bitmap screenshot = new Bitmap(new System.IO.MemoryStream(byteArray));
-            System.Drawing.Rectangle croppedImage = new System.Drawing.Rectangle(element.Location.X, element.Location.Y, element.Size.Width, element.Size.Height);
+            Bitmap screenshot = new Bitmap(new MemoryStream(byteArray));
+            Rectangle croppedImage = new Rectangle(element.Location.X, element.Location.Y, element.Size.Width, element.Size.Height);
             screenshot = screenshot.Clone(croppedImage, screenshot.PixelFormat);
-            //string path = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"TestOutput\");
-
             string path = ReturnPathFolder(3, "TestOutput\\Screenshots");
-
             screenshot.Save(path + fileName + fileType, ImageFormat.Jpeg);
-
+            
             return path + fileName + fileType;
         }
 
@@ -55,15 +52,28 @@ namespace UzonePageObject
             return properPath + dirName + "\\";
         }
 
-        public void EmptyDirectory(string path)
+        public byte[] GetImage(string filePath)
         {
-            System.IO.DirectoryInfo di = new DirectoryInfo(path);
+            Image img = Image.FromFile(filePath);
+            byte[] arr;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                arr = ms.ToArray();
+            }
+
+            return arr;
+        }
+
+        public void ClearFolder(string filePath)
+        {            
+            DirectoryInfo di = new DirectoryInfo(filePath);
 
             foreach (FileInfo file in di.EnumerateFiles())
             {
                 file.Delete();
             }
-            foreach (DirectoryInfo dir in di.EnumerateDirectories())
+            foreach (DirectoryInfo dir in di.GetDirectories())
             {
                 dir.Delete(true);
             }

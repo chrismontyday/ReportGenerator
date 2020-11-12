@@ -49,12 +49,9 @@ namespace ExcelConnect
                 }
             }
 
+            xlWorkbook.Close(false);
+            xlApp.Quit();
             return list;
-        }
-
-        public void CloseWorkbook()
-        {
-            xlWorkbook.Close();
         }
     }
 }

@@ -7,7 +7,6 @@ using USFS.Library.TestAutomation.Test;
 using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
 using ExcelConnect;
-using System.Linq;
 
 namespace Test
 {
@@ -22,7 +21,6 @@ namespace Test
         private SeatingMapPage seatingMap;
         GenerateReports doc = new GenerateReports();
         ExcelConnection excel;
-
         List<TeamMember> list;
 
         [SetUp]
@@ -32,14 +30,14 @@ namespace Test
             list = PopulateTeamMemberList();
             loginPage = new LoginPage();
             profilePage = new ProfilePage();
-            seatingMap = new SeatingMapPage();           
-            BasePage.StartBrowser(config[keyBrowserChoice], config[keyBrowserMode], config[keyResourceUsed]);            
+            seatingMap = new SeatingMapPage();
+            BasePage.StartBrowser(config[keyBrowserChoice], config[keyBrowserMode], config[keyResourceUsed]);
         }
 
         [TearDown]
         public void TearDown()
         {
-            BasePage.CloseBrowser();            
+            BasePage.CloseBrowser();
         }
 
         [Test]
@@ -50,7 +48,7 @@ namespace Test
             //Goto seatingmap and take screenshot
             GetPicsFromUzone(list);
             //Create report in word format
-            doc.CreateDocument(RemoveAllNullTM(list));
+            doc.CreateDocument(list);
         }
 
         public void LoginUzoneTest()
@@ -91,6 +89,7 @@ namespace Test
                         }
                     }
                     Log.Information("Success! - " + tm.Id);
+                    ReportingUtil.test.Pass("GetPicsFromUzone has passed");
                 }
             }
             catch (Exception e)
@@ -103,24 +102,9 @@ namespace Test
         //Creates a List<TeamMember> from Excel Sheet.
         public List<TeamMember> PopulateTeamMemberList()
         {
-            list = excel.GetTeamMembers();
-            excel.CloseWorkbook();
-            return list;
+            Log.Information("Creating List<TeamMember> from Excel sheet.");
+            return excel.GetTeamMembers();
         }
-
-        //Removes TeamMember from List whose Name is null. 
-        public List<TeamMember> RemoveAllNullTM(List<TeamMember> list)
-        {
-
-            var item = list.SingleOrDefault(x => x.Name == null);
-            if (item != null)
-            {
-                list.Remove(item);
-            }
-
-            return list;
-        }
-
     }
 }
 

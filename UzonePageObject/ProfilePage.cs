@@ -9,14 +9,15 @@ namespace UzonePageObject
     public class ProfilePage : BasePage
     {
         public UtilityHelper util = new UtilityHelper();
-        By search = By.XPath("//input[@id='txtSearchTerm']");
-        By noProfile = By.XPath("//td[contains(text(),'Please enter a search term, or select all users from the drop down.')]");
-        By image = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/sk-profilepicture[1]");
-        By profilePicture = By.XPath("//body/img[1]");
 
         public void GetTeamMemberPhoto(TeamMember tm)
         {
-            By profileLink = By.XPath("//a[contains(text(),'" + tm.Name.Trim() + "')]");
+            By search = By.XPath("//input[@id='txtSearchTerm']");
+            By noProfile = By.XPath("//td[contains(text(),'Please enter a search term, or select all users from the drop down.')]");
+            By image = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/sk-profilepicture[1]");
+            By profilePicture = By.XPath("//body/img[1]");
+            By individualLink = By.XPath(@"//a[contains(text(),'" + tm.Name + "')]");
+            By profileLink = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/strong[1]/a[1]");
 
             try
             {
@@ -27,21 +28,22 @@ namespace UzonePageObject
                 Driver.FindElement(search).Clear();
                 Driver.FindElement(search).SendKeys(tm.Name);
                 Driver.FindElement(search).SendKeys(Keys.Enter);
+                Log.Information("Waiting for profile link...");
 
-                //If Team Member's profile can not be found via search this changes their name to null so they can be removed from the list. 
-                if (BrowserUtils.WaitForDisplayed(profileLink, 30) || !BrowserUtils.WaitForDisplayed(noProfile, 10))
+                if (BrowserUtils.WaitForDisplayed(individualLink, 30) || !BrowserUtils.WaitForDisplayed(noProfile, 10))
                 {
-                    Log.Information("Team member profile pic found - " + tm.Name.ToString());
+                    Log.Information("Team member profile link found - " + tm.Name.ToString());                    
                     Driver.FindElement(profileLink).Click();
                     BrowserUtils.WaitForDisplayed(image, 15);
                     tm.PhotoPath = Driver.FindElement(image).GetAttribute("img");
                     Driver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
                     IWebElement photo = Driver.FindElement(profilePicture);
-                    tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Location, tm.Id, true);
-                    Log.Information("Screenshot of profile pic element taken successfully - \nProfile Pic Location: " + photo);
+                    tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Event, tm.Id, true);
+                    Log.Information("Screenshot of profile pic element taken successfully - \nProfile Pic Location: " + tm.PhotoFilePath);
                 }
                 else
                 {
+                    //If Team Member's profile can not be found via search this changes their name to null. 
                     Log.Information("Team member profile pic NOT found: " + tm.Name + " is set to null.");
                     tm.Name = null;
                 }

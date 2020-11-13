@@ -34,17 +34,17 @@ namespace UzonePageObject
                 else
                 {
                     //If Team Member does not have personal seating map. This re-routes to generic map. 
-                    Log.Information("Seating Map does not exist for " + tm.Name.ToString() + ". Rerouting to generic map...");
-                    Driver.Navigate().Refresh();
-                    BrowserUtils.WaitForDisplayed(mapSelect, 30);
-                    Driver.FindElement(mapSelect).Click();
-                    Driver.FindElement(mapSelect).SendKeys(tm.Location);
-                    Driver.FindElement(mapSelect).SendKeys(Keys.Enter);
+                    //Log.Information("Seating Map does not exist for " + tm.Name.ToString() + ". Rerouting to generic map...");
+                    //Driver.Navigate().Refresh();
+                    //BrowserUtils.WaitForDisplayed(mapSelect, 30);
+                    //Driver.FindElement(mapSelect).Click();
+                    //Driver.FindElement(mapSelect).SendKeys(tm.Location);
+                    //Driver.FindElement(mapSelect).SendKeys(Keys.Enter);
                 }
 
                 BrowserUtils.WaitForDisplayed(seatingMap, 30);
                 IWebElement map = Driver.FindElement(seatingMap);
-                tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Location, tm.Id, false);
+                tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Event, tm.Id, false);
                 Log.Information("Screenshot of Seating Map for " + tm.Name.ToString() + " taken." +
                 "\nSeating Map Location: " + tm.MapFilePath.ToString());
             }

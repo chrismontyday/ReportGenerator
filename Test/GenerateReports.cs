@@ -51,7 +51,7 @@ namespace Test
 
                         //Adds to cell 1
                         Log.Information(tm.Name + " photo has been added to report.");
-                        TextRange rangeOne = table[0, 0].AddParagraph().AppendText("Team Lead: " + tm.Name + "\n");
+                        TextRange rangeOne = table[0, 0].AddParagraph().AppendText(tm.Event + "\nTeam Lead: " + tm.Name + "\n");
                         rangeOne.CharacterFormat.FontName = "Calibri";
                         rangeOne.CharacterFormat.TextColor = Color.FromArgb(255, 165, 0);
 
@@ -75,7 +75,7 @@ namespace Test
                         gen.Height = 163;
 
                         Break pageBreak2 = new Break(doc, BreakType.PageBreak);
-                        Log.Information(tm.Id + " index has been added to report.");
+                        Log.Information(tm.Name + " index has been added to report.");
                     }
                 }
 

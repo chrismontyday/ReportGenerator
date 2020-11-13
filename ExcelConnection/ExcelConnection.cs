@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Serilog;
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -16,41 +19,64 @@ namespace ExcelConnect
 
         List<TeamMember> list;
 
-        public ExcelConnection()
+        public ExcelConnection(string fileName = "November coversheets! 10.20.2020.xlsx", string sheetName = "Sheet1")
         {
             xlApp = new Excel.Application();
-            xlWorkbook = xlApp.Workbooks.Open(FileHandler.GenerateDynamicFilePath(Path.Combine(@"Testdata\", @"UZone SeatingMap_BirthdayListApril_02_2020 - 7202020.xls")));
-            xlWorksheet = (Excel.Worksheet)xlWorkbook.Sheets["UZone - Birthdays - SeatingMap"];
+            xlWorkbook = xlApp.Workbooks.Open(FileHandler.GenerateDynamicFilePath(Path.Combine(@"Testdata\", @fileName)));
+            xlWorksheet = (Excel.Worksheet)xlWorkbook.Sheets[@sheetName];
             xlRange = xlWorksheet.UsedRange;
+            Log.Information("Excel Application Opened");
         }
 
         public List<TeamMember> GetTeamMembers()
         {
             list = new List<TeamMember>();
 
-            for (int row = 2; row < xlRange.Rows.Count + 1; row++)
+            try
             {
-                if (xlRange.Cells[row, 1] != null)
+                Log.Information("Reading excel sheet");
+                for (int row = 2; row < xlRange.Rows.Count + 1; row++)
                 {
-                    TeamMember teamMember = new TeamMember()
+                    if (xlRange.Cells[row, 1] != null)
                     {
-                        Name = (xlRange.Cells[row, 1] as Excel.Range).Value2.ToString(),
-                        Email = (xlRange.Cells[row, 2] as Excel.Range).Value2.ToString(),
-                        Location = (xlRange.Cells[row, 3] as Excel.Range).Value2.ToString(),
-                        TeamName = (xlRange.Cells[row, 4] as Excel.Range).Value2.ToString(),
-                        SubTeamName = (xlRange.Cells[row, 5] as Excel.Range).Value2.ToString(),
-                        Id = row
-                    };
-                    list.Add(teamMember);
+                        TeamMember teamMember = new TeamMember()
+                        {
+                            Name = (xlRange.Cells[row, 1] as Excel.Range).Value2.ToString(),
+                            Event = (xlRange.Cells[row, 2] as Excel.Range).Value2.ToString(),
+                            Email = (xlRange.Cells[row, 3] as Excel.Range).Value2.ToString(),
+                            TeamName = (xlRange.Cells[row, 4] as Excel.Range).Value2.ToString(),
+                            SubTeamName = (xlRange.Cells[row, 5] as Excel.Range).Value2.ToString(),
+                            Id = row
+                        };
+                        list.Add(teamMember);
+                        Log.Information(teamMember.Name + " has been added to the list from excel sheet.");
+                    }
+                    else
+                    {
+                        row += xlRange.Columns.Count;
+                    }
                 }
-                else
-                {
-                    row += xlRange.Columns.Count;
-                }
+
+                //These don't do anything... I have no idea why. 
+                xlWorkbook.Close();
+                xlApp.Quit();
+                Marshal.ReleaseComObject(xlWorkbook);
+                Marshal.ReleaseComObject(xlApp);
+                Log.Information("Excel Application Closed.");
+            }
+            catch (Exception e)
+            {
+                //Why doesn't excel close? hmm...
+                xlWorkbook.Close();
+                xlApp.Quit();
+                Marshal.ReleaseComObject(xlWorkbook);
+                Marshal.ReleaseComObject(xlApp);
+                Log.Information("Excel Application Closed.");
+                Log.Error(e, "GetTeamMembers() has failed");
+                throw new Exception("GetTeamMembers() Failed", e);
             }
 
-            xlWorkbook.Close(false);
-            xlApp.Quit();
+
             return list;
         }
     }

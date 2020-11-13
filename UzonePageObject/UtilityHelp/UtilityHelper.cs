@@ -100,5 +100,11 @@ namespace UzonePageObject
             WebDriver.Quit();
         }
 
+        public void KillExcel()
+        {
+            string strCmdText;
+            strCmdText = "taskkill /f /im excel.exe";
+            System.Diagnostics.Process.Start("CMD.exe", strCmdText);
+        }
     }
 }

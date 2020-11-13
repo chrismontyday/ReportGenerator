@@ -20,6 +20,7 @@ namespace Test
         private ProfilePage profilePage;
         private SeatingMapPage seatingMap;
         GenerateReports doc = new GenerateReports();
+        UtilityHelper auto = new UtilityHelper();
         ExcelConnection excel;
         List<TeamMember> list;
 
@@ -28,6 +29,11 @@ namespace Test
         {
             excel = new ExcelConnection();
             list = PopulateTeamMemberList();
+
+            //This will kill all excel tasks running at the time it was called. 
+            auto.KillExcel();
+            Log.Information("taskkill - excel.exe ran. All open versions of Excel are now closed.");
+
             loginPage = new LoginPage();
             profilePage = new ProfilePage();
             seatingMap = new SeatingMapPage();
@@ -78,18 +84,7 @@ namespace Test
                 Log.Information("GetPicsFromUzone() has started");
                 foreach (TeamMember tm in list)
                 {
-                    Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
-                    if (tm.Name != "Leader" && tm.Name != null)
-                    {
-                        profilePage.GetTeamMemberPhoto(tm);
-
-                        if (tm.Name != null)
-                        {
-                            seatingMap.GetTeamMemberSeatingMap(tm);
-                        }
-                    }
-                    Log.Information("Success! - " + tm.Id);
-                    ReportingUtil.test.Pass("GetPicsFromUzone has passed");
+                    GetPicThread(tm);
                 }
             }
             catch (Exception e)
@@ -104,6 +99,23 @@ namespace Test
         {
             Log.Information("Creating List<TeamMember> from Excel sheet.");
             return excel.GetTeamMembers();
+        }
+
+        //Should be easier to make into thread. 
+        public void GetPicThread(TeamMember tm)
+        {
+            Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
+            if (tm.Name != "Leader" && tm.Name != null)
+            {
+                profilePage.GetTeamMemberPhoto(tm);
+
+                if (tm.Name != null)
+                {
+                    seatingMap.GetTeamMemberSeatingMap(tm);
+                }
+            }
+            Log.Information("Success! - " + tm.Id);
+            ReportingUtil.test.Pass("GetPicsFromUzone has passed");
         }
     }
 }

@@ -31,16 +31,6 @@ namespace UzonePageObject
                     Log.Information("Seating map for " + tm.Name.ToString() + " found!");
                     Driver.FindElement(fullScreen).Click();
                 }
-                else
-                {
-                    //If Team Member does not have personal seating map. This re-routes to generic map. 
-                    //Log.Information("Seating Map does not exist for " + tm.Name.ToString() + ". Rerouting to generic map...");
-                    //Driver.Navigate().Refresh();
-                    //BrowserUtils.WaitForDisplayed(mapSelect, 30);
-                    //Driver.FindElement(mapSelect).Click();
-                    //Driver.FindElement(mapSelect).SendKeys(tm.Location);
-                    //Driver.FindElement(mapSelect).SendKeys(Keys.Enter);
-                }
 
                 BrowserUtils.WaitForDisplayed(seatingMap, 30);
                 IWebElement map = Driver.FindElement(seatingMap);

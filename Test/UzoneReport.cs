@@ -7,6 +7,7 @@ using USFS.Library.TestAutomation.Test;
 using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
 using ExcelConnect;
+using System.Threading;
 
 namespace Test
 {
@@ -28,7 +29,7 @@ namespace Test
         public void SetUp()
         {
             excel = new ExcelConnection();
-            list = PopulateTeamMemberList();
+            list = excel.GetTeamMembers();
 
             //This will kill all excel tasks running at the time it was called. 
             auto.KillExcel();
@@ -84,7 +85,26 @@ namespace Test
                 Log.Information("GetPicsFromUzone() has started");
                 foreach (TeamMember tm in list)
                 {
-                    GetPicThread(tm);
+                    try
+                    {
+                        Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
+                        if (tm.Name != "Leader" && tm.Name != null)
+                        {
+                            profilePage.GetTeamMemberPhoto(tm);
+
+                            if (tm.Name != null)
+                            {
+                                seatingMap.GetTeamMemberSeatingMap(tm);
+                            }
+                        }
+                        Log.Information("Success! - " + tm.Id);
+                        ReportingUtil.test.Pass("GetPics() has passed");
+
+                    }
+                    catch
+                    {
+                        Log.Information("GetPics() failed on team member - Id: " + tm.Id);
+                    }
                 }
             }
             catch (Exception e)
@@ -92,31 +112,8 @@ namespace Test
                 Log.Error(e, "GetPicsFromUzone() has Failed");
                 throw new Exception("GetPicsFromUzone() Failed", e);
             }
-        }
+        }       
 
-        //Creates a List<TeamMember> from Excel Sheet.
-        public List<TeamMember> PopulateTeamMemberList()
-        {
-            Log.Information("Creating List<TeamMember> from Excel sheet.");
-            return excel.GetTeamMembers();
-        }
-
-        //Should be easier to make into thread. 
-        public void GetPicThread(TeamMember tm)
-        {
-            Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
-            if (tm.Name != "Leader" && tm.Name != null)
-            {
-                profilePage.GetTeamMemberPhoto(tm);
-
-                if (tm.Name != null)
-                {
-                    seatingMap.GetTeamMemberSeatingMap(tm);
-                }
-            }
-            Log.Information("Success! - " + tm.Id);
-            ReportingUtil.test.Pass("GetPicsFromUzone has passed");
-        }
     }
 }
 

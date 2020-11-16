@@ -83,8 +83,9 @@ namespace Test
                 doc.SaveToFile(filePath, FileFormat.Docx);
                 Log.Information("Created Document successfully.");
 
-                //Empties out folder where screenshots were kept. 
+                //Empties out folder where screenshots & excel sheet were kept. 
                 auto.ClearFolder(auto.ReturnPathFolder(3, "TestOutput\\Screenshots"));
+                auto.ClearFolder(auto.ReturnPathFolder(3, "Exceldata"));
                 Log.Information("Screenshots Folder has been emptied");
             }
             catch (Exception e)

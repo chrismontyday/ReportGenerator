@@ -3,12 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelConnect
-
 {
     public class ExcelConnection
     {
@@ -16,13 +14,13 @@ namespace ExcelConnect
         Excel.Workbook xlWorkbook;
         Excel._Worksheet xlWorksheet;
         Excel.Range xlRange;
-
+        UtilityHelper auto = new UtilityHelper();
         List<TeamMember> list;
 
-        public ExcelConnection(string fileName = "November coversheets! 10.20.2020.xlsx", string sheetName = "Sheet1")
-        {
+        public ExcelConnection(string sheetName = "Sheet1")
+        {           
             xlApp = new Excel.Application();
-            xlWorkbook = xlApp.Workbooks.Open(FileHandler.GenerateDynamicFilePath(Path.Combine(@"Testdata\", @fileName)));
+            xlWorkbook = xlApp.Workbooks.Open(GetFile());
             xlWorksheet = (Excel.Worksheet)xlWorkbook.Sheets[@sheetName];
             xlRange = xlWorksheet.UsedRange;
             Log.Information("Excel Application Opened");
@@ -76,8 +74,13 @@ namespace ExcelConnect
                 throw new Exception("GetTeamMembers() Failed", e);
             }
 
-
             return list;
+        }
+
+        public string GetFile()
+        {
+            string[] file =  Directory.GetFiles(auto.ReturnPathFolder(3, @"Exceldata"));
+            return file[0].ToString();
         }
     }
 }

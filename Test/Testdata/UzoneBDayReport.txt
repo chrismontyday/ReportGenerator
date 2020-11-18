@@ -1,0 +1,10 @@
+NUnit Console Runner 3.9.0
+Copyright (c) 2018 Charlie Poole, Rob Prouse
+
+Runtime Environment
+   OS Version: Microsoft Windows NT 10.0.18362.0
+  CLR Version: 4.0.30319.42000
+
+Test Files
+    C:\Code\testautomation-ui-uzone-page-object-model\Test\bin\Debug\netcoreapp3.1\Test.dll
+

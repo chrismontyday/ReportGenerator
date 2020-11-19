@@ -29,10 +29,7 @@ namespace Test
                 Break pageBreak = new Break(doc, BreakType.PageBreak);
 
                 foreach (TeamMember tm in list)
-                {
-                    //tm.MapFilePath = TeamMember.AddDummyMap();
-                    //tm.PhotoFilePath = TeamMember.AddDummyPhoto();
-
+                {                   
                     try
                     {
                         if (tm.Name != null && tm.MapFilePath != null && tm.PhotoFilePath != null)

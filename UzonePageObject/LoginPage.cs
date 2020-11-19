@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using System;
 using System.Threading;
 using USFS.Library.TestAutomation;
 using USFS.Library.TestAutomation.Util;
@@ -13,22 +14,22 @@ namespace UzonePageObject
 
         public string LoginUzone(string url, string userName, string password)
         {
-            Driver.Navigate().GoToUrl(url);
-            Driver.FindElement(UserNameField).SendKeys(userName);
-            Driver.FindElement(PasswordField).SendKeys(password);
-            Driver.FindElement(LoginButton).Click();
-            Thread.Sleep(200);
-            return Driver.Title;
-        }
+            try
+            {
+                Driver.Navigate().GoToUrl(url);
+                BrowserUtils.WaitForDisplayed(LoginButton,30);
+                Driver.FindElement(UserNameField).SendKeys(userName);
+                Driver.FindElement(PasswordField).SendKeys(password);
+                Driver.FindElement(LoginButton).Click();
+                Thread.Sleep(200);
+                return Driver.Title;
+            }
+            catch(Exception e)
+            {
+                String a = e.Message.ToString();
+                return Driver.Title;
 
-
-        //Autologin with SSO
-        public string GotoUzoneHomePage(string url)
-        {
-            Driver.Navigate().GoToUrl(url);
-            Thread.Sleep(60);
-            return Driver.Title;
+            }
         }
     }
-
 }

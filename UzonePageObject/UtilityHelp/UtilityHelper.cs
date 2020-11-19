@@ -11,7 +11,6 @@ namespace UzonePageObject
     public class UtilityHelper
     {
         public IWebDriver WebDriver;
-        public WebDriverWait Wait { get { return new WebDriverWait(WebDriver, TimeSpan.FromSeconds(60)); } }
 
         //Takes a screenshot of an element. 
         public string TakeScreenshotOfElement(IWebDriver driver, IWebElement element, string name, string floor, int Id, bool person, string fileType = ".jpg")
@@ -77,27 +76,6 @@ namespace UzonePageObject
             {
                 dir.Delete(true);
             }
-        }
-
-        public void SetUpWebDriver()
-        {
-            //ChromeOptions options = new ChromeOptions();
-            //options.AddArguments("--incognito");
-            //options.AddArguments("--headless");
-            //options.AddArguments("--user-agent=USFS");
-            //options.AddArguments("--window-size=1920,1080");           
-
-            //Instantiate new Chrome Driver and maximize the window
-            //WebDriver = new ChromeDriver(options);
-            WebDriver = new ChromeDriver();
-            WebDriver.Manage().Window.Maximize();
-            WebDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(25);
-            WebDriver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(25);
-        }
-
-        public void TeardownWebDriver()
-        {
-            WebDriver.Quit();
         }
 
         public void KillExcel()

@@ -10,6 +10,6 @@
         public string PhotoPath { get; set; }
         public int Id { get; set; }
         public string PhotoFilePath { get; set; }
-        public string MapFilePath { get; set; }      
+        public string MapFilePath { get; set; }
     }
 }

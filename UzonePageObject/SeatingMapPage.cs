@@ -32,11 +32,13 @@ namespace UzonePageObject
                     Driver.FindElement(fullScreen).Click();
                 }
 
-                BrowserUtils.WaitForDisplayed(seatingMap, 30);
-                IWebElement map = Driver.FindElement(seatingMap);
-                tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Event, tm.Id, false);
-                Log.Information("Screenshot of Seating Map for " + tm.Name.ToString() + " taken." +
-                "\nSeating Map Location: " + tm.MapFilePath.ToString());
+                if (BrowserUtils.WaitForDisplayed(seatingMap, 30))
+                {
+                    IWebElement map = Driver.FindElement(seatingMap);
+                    tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Event, tm.Id, false);
+                    Log.Information("Screenshot of Seating Map for " + tm.Name.ToString() + " taken." +
+                    "\nSeating Map Location: " + tm.MapFilePath.ToString());
+                }
             }
             catch (Exception e)
             {

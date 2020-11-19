@@ -17,6 +17,12 @@ namespace ExcelConnect
         UtilityHelper auto = new UtilityHelper();
         List<TeamMember> list;
 
+        public string GetFile()
+        {
+            string[] file =  Directory.GetFiles(auto.ReturnPathFolder(3, @"Exceldata"));
+            return file[0].ToString();
+        }
+
         public ExcelConnection(string sheetName = "Sheet1")
         {           
             xlApp = new Excel.Application();
@@ -77,10 +83,5 @@ namespace ExcelConnect
             return list;
         }
 
-        public string GetFile()
-        {
-            string[] file =  Directory.GetFiles(auto.ReturnPathFolder(3, @"Exceldata"));
-            return file[0].ToString();
-        }
     }
 }

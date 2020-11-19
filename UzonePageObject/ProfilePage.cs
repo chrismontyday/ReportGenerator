@@ -3,6 +3,7 @@ using System;
 using USFS.Library.TestAutomation;
 using Serilog;
 using USFS.Library.TestAutomation.Util;
+using System.Threading;
 
 namespace UzonePageObject
 {
@@ -28,6 +29,7 @@ namespace UzonePageObject
                 Driver.FindElement(search).Clear();
                 Driver.FindElement(search).SendKeys(tm.Name);
                 Driver.FindElement(search).SendKeys(Keys.Enter);
+                Thread.Sleep(1000);
                 Log.Information("Waiting for profile link...");
 
                 if (BrowserUtils.WaitForDisplayed(individualLink, 30) || !BrowserUtils.WaitForDisplayed(noProfile, 10))

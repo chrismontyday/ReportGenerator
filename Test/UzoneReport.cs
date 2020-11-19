@@ -7,7 +7,6 @@ using USFS.Library.TestAutomation.Test;
 using USFS.Library.TestAutomation.Util;
 using UzonePageObject;
 using ExcelConnect;
-using System.Threading;
 
 namespace Test
 {
@@ -28,6 +27,7 @@ namespace Test
         [SetUp]
         public void SetUp()
         {
+            Log.Information("START!");
             excel = new ExcelConnection();
             list = excel.GetTeamMembers();
 

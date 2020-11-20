@@ -18,7 +18,7 @@ namespace Test
         {
             string generic = auto.ReturnPathFolder(3, "Testdata") + "generic.jpg";
             string filePath = auto.ReturnPathFolder(3, "Reports") + list.Count.ToString() + "-SeatingMap-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + ".docx";
-            
+
             try
             {
                 Log.Information("CreateDocument() has started...");
@@ -29,7 +29,7 @@ namespace Test
                 Break pageBreak = new Break(doc, BreakType.PageBreak);
 
                 foreach (TeamMember tm in list)
-                {                   
+                {
                     try
                     {
                         if (tm.Name != null && tm.MapFilePath != null && tm.PhotoFilePath != null)
@@ -81,14 +81,41 @@ namespace Test
                     }
                 }
 
-                //Save report
-                doc.SaveToFile(filePath, FileFormat.Docx);
-                Log.Information("SUCCESS!!!! - Report created successfully.");
+                try
+                {
+                    //Save report
+                    doc.SaveToFile(filePath, FileFormat.Docx);
+                    Log.Information("SUCCESS!!!! - Report created successfully.");
 
-                //Empties out folder where screenshots & excel sheet were kept. 
-                auto.ClearFolder(auto.ReturnPathFolder(3, "TestOutput\\Screenshots"));
-                //auto.ClearFolder(auto.ReturnPathFolder(3, "Exceldata"));
-                Log.Information("Screenshots Folder has been emptied");
+                }
+                catch
+                {
+                    Log.Information("Report was not saved successfully.");
+                }
+
+                try
+                {
+                    //Sends report in email.
+                    Email.SendEMail("Uzone Birthday Report " + DateTime.Now.ToString("yyyy-MM-dd"), "Word document attached", "CDAY@UWM.COM", "username@email.com", filePath);
+                    Log.Information("Email sent successfully!");
+                }
+                catch
+                {
+                    Log.Information("Failed to send email.");
+                }
+
+                try
+                {
+                    //Empties out folder where screenshots & excel sheet were kept. 
+                    auto.ClearFolder(auto.ReturnPathFolder(3, "TestOutput\\Screenshots"));
+                    //auto.ClearFolder(auto.ReturnPathFolder(3, "Exceldata"));
+                    Log.Information("Screenshots Folder has been emptied");
+                }
+                catch
+                {
+                    Log.Information("Failed to empty screeenshots folder");
+                }
+
             }
             catch (Exception e)
             {

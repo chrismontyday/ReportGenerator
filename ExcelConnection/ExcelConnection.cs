@@ -23,7 +23,7 @@ namespace ExcelConnect
             return file[0].ToString();
         }
 
-        public ExcelConnection(string sheetName = "Sheet1")
+        public ExcelConnection(string sheetName = "UZone - Birthdays - SeatingMap")
         {           
             xlApp = new Excel.Application();
             xlWorkbook = xlApp.Workbooks.Open(GetFile());

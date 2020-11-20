@@ -3,8 +3,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
 namespace UzonePageObject
 {
@@ -31,7 +29,7 @@ namespace UzonePageObject
             Rectangle croppedImage = new Rectangle(element.Location.X, element.Location.Y, element.Size.Width, element.Size.Height);
             screenshot = screenshot.Clone(croppedImage, screenshot.PixelFormat);
             string path = ReturnPathFolder(3, "TestOutput\\Screenshots");
-            screenshot.Save(path + fileName + fileType, ImageFormat.Jpeg);
+            screenshot.Save(path + fileName + fileType, ImageFormat.Jpeg);            
             
             return path + fileName + fileType;
         }
@@ -39,7 +37,7 @@ namespace UzonePageObject
         public string ReturnPathFolder(int dirsBack = 3, string dirName = "TestOutput")
         {
             string properPath = "";
-            string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string[] dirs = path.Split('\\');
             int num = dirs.Length - dirsBack;
 
@@ -57,7 +55,7 @@ namespace UzonePageObject
             byte[] arr;
             using (MemoryStream ms = new MemoryStream())
             {
-                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                img.Save(ms, ImageFormat.Jpeg);
                 arr = ms.ToArray();
             }
 

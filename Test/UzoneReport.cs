@@ -127,6 +127,8 @@ namespace Test
             }
         }
 
+        //Returns a List<List<TeamMember>>. A List of Lists of Team Members AKA a Multi-Deminsional Array which is why the method is called CreateMDArray(). 
+        //MD being short for multi-deminsional. Size of arrays can be adjusted 
         public List<List<TeamMember>> CreateMDArray(List<TeamMember> list, int reportSize = 10)
         {
             Log.Information("CreateMDArray() has been initiated.");

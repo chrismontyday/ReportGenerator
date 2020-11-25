@@ -27,7 +27,7 @@ namespace Test
         [SetUp]
         public void SetUp()
         {
-            Log.Information("START!");
+            Log.Information("Program Starting...");
             excel = new ExcelConnection();
             list = excel.GetTeamMembers();
 
@@ -52,8 +52,10 @@ namespace Test
         {
             //Login
             LoginUzoneTest();
-            //Creates and Sends Reports. 
-            CreateReport(list);
+            //Gets Team Member's Profile Pics & Seating Map 
+            GetPicsFromUzone(list);
+            //Generates report and emails it. 
+            doc.CreateDocument(list);
         }
 
         public void LoginUzoneTest()
@@ -74,86 +76,31 @@ namespace Test
             }
         }
 
-        public void CreateReport(List<TeamMember> list)
-        {
-            List<List<TeamMember>> multiList = CreateMDArray(list);
-
-            foreach (List<TeamMember> miniList in multiList)
-            {
-                //Gets pics
-                GetPicsFromUzone(miniList);
-                //Create report in word format
-                doc.CreateDocument(miniList);
-            }
-        }
-
         public void GetPicsFromUzone(List<TeamMember> list)
         {
-            try
+            Log.Information("GetPicsFromUzone() has started");
+            foreach (TeamMember tm in list)
             {
-                Log.Information("GetPicsFromUzone() has started");
-                foreach (TeamMember tm in list)
+                try
                 {
-                    GetPics(tm);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e, "GetPicsFromUzone() has Failed");
-                throw new Exception("GetPicsFromUzone() Failed", e);
-            }
-        }
-
-        public void GetPics(TeamMember tm)
-        {
-            try
-            {
-                Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
-                if (tm.Name != "Leader" && tm.Name != null)
-                {
-                    profilePage.GetTeamMemberPhoto(tm);
-
-                    if (tm.Name != null)
+                    Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
+                    if (tm.Name != "Leader" && tm.Name != null)
                     {
-                        seatingMap.GetTeamMemberSeatingMap(tm);
+                        profilePage.GetTeamMemberPhoto(tm);
+
+                        if (tm.Name != null)
+                        {
+                            seatingMap.GetTeamMemberSeatingMap(tm);
+                        }
                     }
+                    Log.Information("Success! - " + tm.Id);
+                    ReportingUtil.test.Pass("GetPics() has passed");
                 }
-                Log.Information("Success! - " + tm.Id);
-                ReportingUtil.test.Pass("GetPics() has passed");
-            }
-            catch
-            {
-                Log.Information("GetPics() failed on team member - Id: " + tm.Id);
-            }
-        }
-
-        //Returns a List<List<TeamMember>>. A List of Lists of Team Members AKA a Multi-Deminsional Array which is why the method is called CreateMDArray(). 
-        //MD being short for multi-deminsional. Size of arrays can be adjusted 
-        public List<List<TeamMember>> CreateMDArray(List<TeamMember> list, int reportSize = 10)
-        {
-            Log.Information("CreateMDArray() has been initiated.");
-            List<List<TeamMember>> multiList = new List<List<TeamMember>>();
-            int num = (int)Math.Round((decimal)list.Count / reportSize);
-
-            for (int i = 0; i <= num; i++)
-            {
-                List<TeamMember> tempList = new List<TeamMember>();
-
-                if (i != num)
+                catch
                 {
-                    for (int j = 0; j < reportSize; j++)
-                    {
-                        tempList.Add(list[j]);
-                    }
-                    multiList.Add(tempList);
-                    list.RemoveRange(0, reportSize);
-                }
-                else
-                {
-                    multiList.Add(list);
+                    Log.Information("GetPics() failed on team member - Id: " + tm.Id);
                 }
             }
-            return multiList;
         }
     }
 }

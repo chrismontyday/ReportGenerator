@@ -40,7 +40,7 @@ namespace UzonePageObject
                     tm.PhotoPath = Driver.FindElement(image).GetAttribute("img");
                     Driver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
                     IWebElement photo = Driver.FindElement(profilePicture);
-                    tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Event, tm.Id, true);
+                    tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Id, true);
                     Log.Information("Screenshot of profile pic element taken successfully - \nProfile Pic Location: " + tm.PhotoFilePath);
                 }
                 else

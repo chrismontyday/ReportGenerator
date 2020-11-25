@@ -11,17 +11,17 @@ namespace UzonePageObject
         public IWebDriver WebDriver;
 
         //Takes a screenshot of an element. 
-        public string TakeScreenshotOfElement(IWebDriver driver, IWebElement element, string name, string floor, int Id, bool person, string fileType = ".jpg")
+        public string TakeScreenshotOfElement(IWebDriver driver, IWebElement element, string name, int Id, bool person, string fileType = ".jpg")
         {
             string fileName;
 
             if (person)
             {
-                fileName = Id + "-" + name.ToLower().Trim() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "-" + floor.ToLower().Trim();
+                fileName = Id + "-" + name.ToLower().Trim() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             }
             else
             {
-                fileName = Id + "-seating_map-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "-" + floor.ToLower().Trim();
+                fileName = Id + "-seating_map-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             }
 
             Byte[] byteArray = ((ITakesScreenshot)driver).GetScreenshot().AsByteArray;
@@ -82,5 +82,6 @@ namespace UzonePageObject
             strCmdText = "taskkill /f /im excel.exe";
             System.Diagnostics.Process.Start("CMD.exe", strCmdText);
         }
+
     }
 }

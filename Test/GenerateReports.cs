@@ -16,10 +16,16 @@ namespace Test
 
         public void CreateDocument(List<TeamMember> list)
         {
+            Color blue = Color.FromArgb(0, 96, 154);
+            Color green = Color.FromArgb(166, 195, 114);
             string generic = auto.ReturnPathFolder(3, "Testdata") + "generic.jpg";
-            string filePath = @"\\dfs\ns1\BYOTL\Sandbox\Reports\" + list.Count.ToString() + "_" + 
-                DateTime.Now.ToString("MMMM", System.Globalization.CultureInfo.InvariantCulture) + "_Birthdays_Anniversary_" + 
+            string filePath = @"\\dfs\ns1\BYOTL\Sandbox\Reports\" + 
+                DateTime.Now.ToString("MMMM", System.Globalization.CultureInfo.InvariantCulture) + 
+                "_Birthdays_Anniversary_" + 
                 DateTime.Now.ToString("HH_mm_ss") + ".docx";
+            string emailSubject = "Uzone Birthday/Anniversary Report Created: " + DateTime.Now.ToString("yyyy-MM-dd");
+            string emailBody = "<a href=\"" + filePath + "\">Click Here for Report.</a>";            
+            string fontName = "Roboto";
 
             try
             {
@@ -27,12 +33,15 @@ namespace Test
                 Document doc = new Document();
                 Section one = doc.AddSection();
                 Paragraph p1 = doc.Sections[0].AddParagraph();
-                TextRange text1 = p1.AppendText("Birthday & Anniversary Seating Map Report \nCreated: " + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss" + 
-                    ""));
+                TextRange text1 = p1.AppendText("\nBirthday & Anniversary Seating Map Report " +
+                    "\nCreated on " + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "\n\nREPORT STARTS ON NEXT PAGE\n");
                 Break pageBreak = new Break(doc, BreakType.PageBreak);
 
                 foreach (TeamMember tm in list)
                 {
+                    string teamLead = tm.Event + "\nTeam Lead: " + tm.Name + "\n";
+                    string subTeam = "\nSub Team: " + tm.SubTeamName +
+                        "\nTeam: " + tm.TeamName + "\nFloor: " + tm.Floor;
 
                     if (tm.Name != null && tm.MapFilePath != null && tm.PhotoFilePath != null)
                     {
@@ -41,34 +50,32 @@ namespace Test
 
                         Table table = s.AddTable(true);
                         table.ResetCells(1, 2);
-                        table.TableFormat.Borders.Color = Color.FromArgb(0, 96, 154);
-                        table.TableFormat.Borders.Vertical.Color = Color.FromArgb(0, 96, 154);
+                        table.TableFormat.Borders.Color = green;
+                        table.TableFormat.Borders.Vertical.Color = green;
                         Log.Information(tm.Id + " - Table created");
 
                         //Adds to cell 1
-                        TextRange rangeOne = table[0, 0].AddParagraph().AppendText(tm.Event + "\nTeam Lead: " + tm.Name + "\n");
-                        rangeOne.CharacterFormat.FontName = "Calibri";
-                        rangeOne.CharacterFormat.TextColor = Color.FromArgb(255, 165, 0);
+                        TextRange rangeOne = table[0, 0].AddParagraph().AppendText(teamLead);
+                        rangeOne.CharacterFormat.FontName = fontName;
+                        rangeOne.CharacterFormat.TextColor = blue;
 
                         DocPicture TMPhoto = table.Rows[0].Cells[0].Paragraphs[0].AppendPicture(auto.GetImage(tm.PhotoFilePath));
                         TMPhoto.Width = 115;
                         TMPhoto.Height = 115;
                         Log.Information(tm.Id + " - Added photo to table.");
 
-                        TextRange rangeTwo = table[0, 0].AddParagraph().AppendText("\nSub Team: " + tm.SubTeamName +
-                        "\nTeam: " + tm.TeamName + "\nFloor: " + tm.Floor );
-                        rangeTwo.CharacterFormat.FontName = "Calibri";
-                        rangeTwo.CharacterFormat.TextColor = Color.FromArgb(255, 165, 0);
+                        TextRange rangeTwo = table[0, 0].AddParagraph().AppendText(subTeam);
+                        rangeTwo.CharacterFormat.FontName = fontName;
+                        rangeTwo.CharacterFormat.TextColor = blue;
 
                         //Adds to cell 2
-                        Log.Information(tm.Id + " - Added seating map to table.");
                         DocPicture TMPhoto2 = table[0, 1].AddParagraph().AppendPicture(auto.GetImage(tm.MapFilePath));
                         TMPhoto2.Width = 350;
                         TMPhoto2.Height = 230;
 
                         DocPicture gen = table[0, 1].AddParagraph().AppendPicture(auto.GetImage(generic));
                         gen.Width = 350;
-                        gen.Height = 163;
+                        gen.Height = 153;
 
                         Break pageBreak2 = new Break(doc, BreakType.PageBreak);
                         Log.Information(tm.Name + " has been added to report.");
@@ -80,7 +87,7 @@ namespace Test
                 Log.Information("SUCCESS!!!! - Report created successfully.");
 
                 //Sends report in email.
-                Email.SendEMail("Uzone Birthday Report " + DateTime.Now.ToString("yyyy-MM-dd"), "<a href=\"" + filePath + "\">Click Here for Report.</a>", "CDAY@UWM.COM", "username@email.com", filePath);
+                Email.SendEMail(emailSubject, emailBody, "CDAY@UWM.COM", "username@email.com", filePath);
                 Log.Information("Email sent successfully!");
 
                 //Empties folders where screenshots & excel sheet were kept. 

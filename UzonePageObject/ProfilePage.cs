@@ -20,41 +20,45 @@ namespace UzonePageObject
             By individualLink = By.XPath(@"//a[contains(text(),'" + tm.Name + "')]");
             By profileLink = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/strong[1]/a[1]");
 
+            Log.Information(tm.Name + " GetTeamMemberPhoto() has started.");
+
             try
             {
-                Log.Information("GetTeamMemberPhoto() has started.");
-                Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/user/index.html#/all");
-                BrowserUtils.WaitForDisplayed(search, 30);
-                Driver.FindElement(search).Click();
-                Driver.FindElement(search).Clear();
-                Driver.FindElement(search).SendKeys(tm.Name);
-                Driver.FindElement(search).SendKeys(Keys.Enter);
-                Thread.Sleep(1000);
-                Log.Information("Waiting for profile link...");
-
-                if (BrowserUtils.WaitForDisplayed(individualLink, 30) || !BrowserUtils.WaitForDisplayed(noProfile, 10))
+                int threeTries = 3;
+                do
                 {
-                    Log.Information("Team member profile link found - " + tm.Name.ToString());                    
-                    Driver.FindElement(profileLink).Click();
-                    BrowserUtils.WaitForDisplayed(image, 15);
-                    tm.PhotoPath = Driver.FindElement(image).GetAttribute("img");
-                    Driver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
-                    IWebElement photo = Driver.FindElement(profilePicture);
-                    tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Id, true);
-                    Log.Information("Screenshot of profile pic element taken successfully - \nProfile Pic Location: " + tm.PhotoFilePath);
-                }
-                else
-                {
-                    //If Team Member's profile can not be found via search this changes their name to null. 
-                    Log.Information("Team member profile pic NOT found: " + tm.Name + " is set to null.");
-                    tm.Name = null;
-                }
+                    Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/user/index.html#/all");
+                    BrowserUtils.WaitForDisplayed(search, 90);
+                    Driver.FindElement(search).Click();
+                    Driver.FindElement(search).Clear();
+                    Driver.FindElement(search).SendKeys(tm.Name);
+                    Driver.FindElement(search).SendKeys(Keys.Enter);
 
+                    if (BrowserUtils.WaitForDisplayed(individualLink, 90) || !BrowserUtils.WaitForDisplayed(noProfile, 90))
+                    {
+                        Driver.FindElement(profileLink).Click();
+                        BrowserUtils.WaitForDisplayed(image, 90);
+                        tm.PhotoPath = Driver.FindElement(image).GetAttribute("img");
+                        Driver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
+                        IWebElement photo = Driver.FindElement(profilePicture);
+                        tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Id, true);
+                        Log.Information(tm.Name + " Screenshot of profile pic element taken successfully");
+                        break;
+                    }
+
+                } while (threeTries-- != 0 && tm.PhotoFilePath == null);
+
+                //if the leader's profile pic could not be found this is where it notes that and skips them. 
+                if (tm.PhotoFilePath == null)
+                {                    
+                    tm.Skipped = true;
+                    Log.Information(tm.Name + " was skipped.");
+                    tm.SkippedNote = tm.Name = " was skipped because bot could not find profile.";
+                }
             }
             catch (Exception e)
-            {
-                Log.Error(e, "Automation in GetTeamMemberPhoto() has failed");
-                throw new Exception("GetTeamMemberPhoto Failed", e);
+            {                
+                throw new Exception("GetTeamMemberPhoto() Method Failed", e);
             }
         }
     }

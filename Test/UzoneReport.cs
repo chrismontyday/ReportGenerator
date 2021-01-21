@@ -78,17 +78,17 @@ namespace Test
 
         public void GetPicsFromUzone(List<TeamMember> list)
         {
-            Log.Information("GetPicsFromUzone() has started");
+            Log.Information("GetPicsFromUzone() method has started");
             foreach (TeamMember tm in list)
             {
                 try
                 {
-                    Log.Information("Getting Profile Pic & Seating Map for - " + tm.Id);
-                    if (tm.Name != "Leader" && tm.Name != null)
+                    
+                    if (tm.Name != "Leader" && tm.Name != null && tm.Skipped == false)
                     {
                         profilePage.GetTeamMemberPhoto(tm);
 
-                        if (tm.Name != null)
+                        if (tm.Name != null || tm.Skipped == false)
                         {
                             seatingMap.GetTeamMemberSeatingMap(tm);
                         }
@@ -98,7 +98,7 @@ namespace Test
                 }
                 catch
                 {
-                    Log.Information("GetPics() failed on team member - Id: " + tm.Id);
+                    Log.Information("GetPicsFromUzone() failed on team member - Id: " + tm.Id);
                 }
             }
         }

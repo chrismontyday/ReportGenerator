@@ -17,7 +17,7 @@ namespace UzonePageObject
             try
             {
                 Driver.Navigate().GoToUrl(url);
-                BrowserUtils.WaitForDisplayed(LoginButton,30);
+                BrowserUtils.WaitForDisplayed(LoginButton,90);
                 Driver.FindElement(UserNameField).SendKeys(userName);
                 Driver.FindElement(PasswordField).SendKeys(password);
                 Driver.FindElement(LoginButton).Click();

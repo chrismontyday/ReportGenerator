@@ -13,7 +13,7 @@
     <PackageReference Include="NUnit.ConsoleRunner" Version="3.11.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="80.0.3987.10600" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="86.0.4240.2200" />
     <PackageReference Include="Spire.Doc" Version="8.10.4" />
     <!--<PackageReference Include="USFS.Library.TestAutomation" Version="2020.9.22.1743" />-->
     <PackageReference Include="USFS.Library.TestAutomation" Version="2020.10.9.705" />

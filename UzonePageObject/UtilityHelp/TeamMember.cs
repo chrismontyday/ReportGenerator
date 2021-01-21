@@ -11,6 +11,8 @@
         public int Id { get; set; }
         public string PhotoFilePath { get; set; }
         public string MapFilePath { get; set; }
-        public string Floor { get; set; } 
+        public string Floor { get; set; }
+        public bool Skipped { get; set; }
+        public string SkippedNote { get; set; }
     }
 }

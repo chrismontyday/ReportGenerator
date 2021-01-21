@@ -21,32 +21,45 @@ namespace UzonePageObject
         {
             try
             {
-                Log.Information("GetTeamMemberSeatingMap() has started");
-                Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/map/#/map/51");
-                BrowserUtils.WaitForDisplayed(searchBox, 30);
-                Driver.FindElement(searchBox).Click();
-                Driver.FindElement(searchSeatMap).SendKeys(tm.Name);
-                Driver.FindElement(searchSeatMap).SendKeys(Keys.Enter);
-
-                if (BrowserUtils.WaitForVisible(fullScreen, 30))
+                int threeTries = 3;
+                do
                 {
-                    Log.Information("Seating map for " + tm.Name.ToString() + " found!");
-                    Actions action = new Actions(Driver);
-                    action.MoveByOffset(0, 0).Click().Perform();
+                    Log.Information("Getting " + tm.Name + " Seating map");
+                    Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/map/#/map/51");
+                    BrowserUtils.WaitForDisplayed(searchBox, 90);
+                    Driver.FindElement(searchBox).Click();
+                    Driver.FindElement(searchSeatMap).SendKeys(tm.Name);
+                    Driver.FindElement(searchSeatMap).SendKeys(Keys.Enter);
+
+                    if (BrowserUtils.WaitForVisible(fullScreen, 90))
+                    {
+                        Actions action = new Actions(Driver);
+                        action.MoveByOffset(0, 0).Click().Perform();
+                    }
+
+                    if (BrowserUtils.WaitForVisible(seatingMap, 90))
+                    {
+                        IWebElement map = Driver.FindElement(seatingMap);
+                        tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Id, false);
+                        tm.Floor = Driver.FindElement(floorNumber).Text;
+                        break;
+                    }
+
+                } while (threeTries-- != 0 && tm.PhotoFilePath == null);
+
+                if (tm.MapFilePath == null)
+                {
+                    Log.Information("Seating map failed for " + tm.Name);
+                    tm.SkippedNote = tm.Name + " was skipped because bot could not find their seating map.";
                 }
-
-                if (BrowserUtils.WaitForVisible(seatingMap, 30))
+                else
                 {
-                    IWebElement map = Driver.FindElement(seatingMap);
-                    tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Id, false);
-                    Log.Information("Screenshot of Seating Map for " + tm.Name.ToString() + " taken." +
-                    "\nSeating Map Location: " + tm.MapFilePath.ToString());
-                    tm.Floor = Driver.FindElement(floorNumber).Text;
+                    tm.Skipped = true;
+                    Log.Information("Screenshot of Seating Map for " + tm.Name + " taken successfully.");
                 }
             }
             catch (Exception e)
             {
-                Log.Error(e, "GetTeamMemberSeatingMap() has failed");
                 throw new Exception("GetTeamMemberSeatingMap Failed", e);
             }
         }

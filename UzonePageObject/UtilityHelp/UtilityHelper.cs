@@ -83,5 +83,21 @@ namespace UzonePageObject
             System.Diagnostics.Process.Start("CMD.exe", strCmdText);
         }
 
+        public static string[] ConvertListToStringArray(System.Collections.Generic.List<string> list)
+        {
+            string[] returnArray = new string[list.Count];
+            int num = 0;
+            System.Collections.IList list1 = list;
+
+            for (int i = 0; i < list1.Count; i++)
+            {
+                TeamMember tm = (TeamMember)list1[i];
+                returnArray[num] = tm.SkippedNote.ToString();
+                num++;
+            }
+
+            return returnArray;
+        }
+
     }
 }

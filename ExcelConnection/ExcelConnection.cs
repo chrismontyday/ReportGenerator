@@ -45,7 +45,7 @@ namespace ExcelConnect
             {
                 string columnName = (xlRange.Cells[1, i] as Excel.Range).Value2.ToString();
 
-                if (columnName.ToLower().Contains("leader") || columnName.ToLower() == "name")
+                if (columnName.ToLower().Trim().Equals("leader") || columnName.ToLower().Trim() == "name")
                 {
                     nameColumn = i;
                 }
@@ -72,11 +72,12 @@ namespace ExcelConnect
                     {
                         TeamMember teamMember = new TeamMember()
                         {
-                            Name = (xlRange.Cells[row, nameColumn] as Excel.Range).Value2.ToString(),
+                            Name = (xlRange.Cells[row, nameColumn] as Excel.Range).Value2.Trim().ToString(),
                             Email = (xlRange.Cells[row, emailColumn] as Excel.Range).Value2.ToString(),
                             TeamName = (xlRange.Cells[row, teamColumn] as Excel.Range).Value2.ToString(),
                             SubTeamName = (xlRange.Cells[row, subteamColumn] as Excel.Range).Value2.ToString(),
-                            Id = row
+                            Id = row,
+                            Skipped = false
                         };
                         list.Add(teamMember);
                         Log.Information(teamMember.Name + " has been red from excel sheet.");

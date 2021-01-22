@@ -24,7 +24,6 @@ namespace UzonePageObject
                 int threeTries = 3;
                 do
                 {
-                    Log.Information("Getting " + tm.Name + " Seating map");
                     Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/map/#/map/51");
                     BrowserUtils.WaitForDisplayed(searchBox, 90);
                     Driver.FindElement(searchBox).Click();
@@ -42,19 +41,21 @@ namespace UzonePageObject
                         IWebElement map = Driver.FindElement(seatingMap);
                         tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Id, false);
                         tm.Floor = Driver.FindElement(floorNumber).Text;
+                        Log.Information(tm.Name + " Screenshot of seating map web element taken successfully");
                         break;
                     }
 
-                } while (threeTries-- != 0 && tm.PhotoFilePath == null);
+                } while (threeTries-- != 0 && tm.MapFilePath == null);
 
                 if (tm.MapFilePath == null)
                 {
-                    Log.Information("Seating map failed for " + tm.Name);
-                    tm.SkippedNote = tm.Name + " was skipped because bot could not find their seating map.";
+                    Log.Information("Seating map FAILED for " + tm.Name + " - SKIPPED!");
+                    tm.Skipped = true;
+                    string dumb = tm.SkippedNote;
+                    tm.SkippedNote = dumb + " - Skipped because bot could not find their seating map. id: " + tm.Id + " Name: " + tm.Name;
                 }
                 else
-                {
-                    tm.Skipped = true;
+                {                    
                     Log.Information("Screenshot of Seating Map for " + tm.Name + " taken successfully.");
                 }
             }

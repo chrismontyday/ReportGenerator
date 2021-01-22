@@ -14,7 +14,7 @@ namespace Test
             Log.Information("SendEMail() has been initiated.");
             MailMessage objMailMessage = new MailMessage();
             SmtpClient objSmtpClient;
-            string strHost = "relay.unitedshore.com";
+            string strHost = "relay.uwm.com";
             int port = 25;
 
             try
@@ -54,7 +54,8 @@ namespace Test
                 Log.Information("SendEMail() Email sent.");
             }
             catch (Exception ex)
-            {                
+            {
+                Log.Information("SendEMail() has failed");
                 throw ex;
             }
             finally

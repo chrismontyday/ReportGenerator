@@ -13,10 +13,8 @@ namespace Test
     {
         UtilityHelper auto = new UtilityHelper();
 
-        public void CreateDocument(List<TeamMember> list)
-        {
-            List<string> lines = new List<string>();                        
-            lines.Add("Skipped Profiles for " + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+        public void CreateDocument(List<TeamMember> list, List<string> skippedProfs)
+        {           
             Color blue = Color.FromArgb(0, 96, 154);
             Color green = Color.FromArgb(166, 195, 114);
             string generic = auto.ReturnPathFolder(3, "Testdata") + "generic.jpg";
@@ -34,8 +32,7 @@ namespace Test
                 Document doc = new Document();
                 Section one = doc.AddSection();
                 Paragraph p1 = doc.Sections[0].AddParagraph();
-                TextRange text1 = p1.AppendText("\nBirthday & Anniversary Seating Map Report " +
-                    "\n\nCreated on " + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "\n\nNEXT PAGE ------------------->\n");
+                TextRange text1 = p1.AppendText(UtilityHelper.ConvertListToString(skippedProfs));
                 Break pageBreak = new Break(doc, BreakType.PageBreak);
 
                 foreach (TeamMember tm in list)
@@ -44,13 +41,7 @@ namespace Test
                     string subTeam = "\nSub Team: " + tm.SubTeamName +
                         "\nTeam: " + tm.TeamName + "\nFloor: " + tm.Floor;
 
-                    if (tm.Skipped == true)
-                    {
-                        lines.Add(tm.SkippedNote);
-                        // WriteAllLines creates a file, writes a collection of strings to the file,
-                        // and then closes the file.  You do NOT need to call Flush() or Close().
-                    }
-                    else if(tm.Name != null && tm.MapFilePath != null && tm.PhotoFilePath != null)
+                    if(tm.Skipped==false && tm.Name != null && tm.MapFilePath != null && tm.PhotoFilePath != null)
                     {
                         Log.Information(tm.Name + " is being added to report. Id: " + tm.Id);
                         Section s = doc.AddSection();
@@ -91,20 +82,16 @@ namespace Test
 
                 //Save report
                 doc.SaveToFile(filePath, FileFormat.Docx);
-                Log.Information("SUCCESS!!!! - Report created successfully.");
-
-                //Saves skipped profiles
-                string[] skippedProfs = UtilityHelper.ConvertListToStringArray(lines);
-                System.IO.File.WriteAllLines(filePath + "Skipped_Profiles_Log_" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"), skippedProfs);
-
-                //Sends report in email.
-                Email.SendEMail(emailSubject, emailBody, "CDAY@UWM.COM", "username@email.com", filePath);
-                Log.Information("Email sent successfully!");
+                Log.Information("SUCCESS!!!! - Report created successfully.");              
 
                 //Empties folders where screenshots & excel sheet were kept. 
                 auto.ClearFolder(auto.ReturnPathFolder(3, "TestOutput\\Screenshots"));
                 auto.ClearFolder(auto.ReturnPathFolder(3, "Exceldata"));
                 Log.Information("Screenshots Folder has been emptied");
+
+                //Sends report in email.
+                Email.SendEMail(emailSubject, emailBody, "CDAY@UWM.COM", "username@email.com", filePath);
+                Log.Information("Email sent successfully!");
 
             }
             catch (Exception e)

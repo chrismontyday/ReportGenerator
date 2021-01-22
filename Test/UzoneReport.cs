@@ -10,6 +10,13 @@ using ExcelConnect;
 
 namespace Test
 {
+    /// <summary>
+    /// Uzone POM takes an excel sheet from /Exceldata > Reads the information and creates a List<TeamMembers> 
+    /// which contains all of the information from the Excel Sheet > Using this data, the bot searches for 
+    /// the Team Member's photo on Uzone.com and their seating map > then finally generates reports on all of
+    /// for every team member and saves it to a file. 
+    /// </summary>
+
     [TestFixture]
     public class UzoneReport : BaseTest
     {
@@ -22,7 +29,8 @@ namespace Test
         GenerateReports doc = new GenerateReports();
         UtilityHelper auto = new UtilityHelper();
         ExcelConnection excel;
-        List<TeamMember> list;
+        static List<List<TeamMember>> multiList;
+        static List<TeamMember> list;
 
         [SetUp]
         public void SetUp()
@@ -53,9 +61,7 @@ namespace Test
             //Login
             LoginUzoneTest();
             //Gets Team Member's Profile Pics & Seating Map 
-            GetPicsFromUzone(list);
-            //Generates report and emails it. 
-            doc.CreateDocument(list);
+            UzoneOrchestrator(list);
         }
 
         public void LoginUzoneTest()
@@ -76,14 +82,16 @@ namespace Test
             }
         }
 
-        public void GetPicsFromUzone(List<TeamMember> list)
+        public void GetPicsFromUzone(List<TeamMember> GetPicsList)
         {
-            Log.Information("GetPicsFromUzone() method has started");
-            foreach (TeamMember tm in list)
+            List<string> skippedNotes = new List<string>();
+
+            foreach (TeamMember tm in GetPicsList)
             {
+                Log.Information(tm.Id + " - " + tm.Name + " - Started automation");
                 try
                 {
-                    
+
                     if (tm.Name != "Leader" && tm.Name != null && tm.Skipped == false)
                     {
                         profilePage.GetTeamMemberPhoto(tm);
@@ -93,13 +101,60 @@ namespace Test
                             seatingMap.GetTeamMemberSeatingMap(tm);
                         }
                     }
-                    Log.Information("Success! - " + tm.Id);
-                    ReportingUtil.test.Pass("GetPics() has passed");
+
+                    if (tm.Skipped == true)
+                    {
+                        skippedNotes.Add(tm.Name + " was skipped. Message:" + tm.SkippedNote);
+                        Log.Information(tm.Id + " - Failed...");
+                    }
+                    else
+                    {
+                        Log.Information(tm.Id + " - Success!");
+                        ReportingUtil.test.Pass("GetPics() has passed");
+                    }
+
                 }
                 catch
                 {
-                    Log.Information("GetPicsFromUzone() failed on team member - Id: " + tm.Id);
+                    Log.Information("GetPicsFromUzone() failed on team member - Id: " + tm.Id + " - " + tm.SkippedNote);
                 }
+            }
+
+            doc.CreateDocument(GetPicsList, skippedNotes);            
+        }
+
+
+
+        /// <summary>
+        /// This Method was added to reduce the amount of memory that the bot was using up. It was breaking after about 300 people. 
+        /// </summary>
+        public void UzoneOrchestrator(List<TeamMember> list)
+        {            
+            List<TeamMember> chunkOfList = new List<TeamMember>();
+            // 175 was chosen because it is known than the bot can handle that amount. 
+            int num = 175;
+
+            if (list.Count > num)
+            {
+                int timesToSplit = list.Count / num;
+
+                for (int i = 0; i < timesToSplit; i++)
+                {
+                    for (int j = 0; j < num; j++)
+                    {
+                        chunkOfList.Add(list[j]);
+                    }       
+                    
+                    GetPicsFromUzone(chunkOfList);
+                    chunkOfList.Clear();
+                    list.RemoveRange(0, num);
+                }
+
+                GetPicsFromUzone(list);
+            }
+            else
+            {
+                GetPicsFromUzone(list);
             }
         }
     }

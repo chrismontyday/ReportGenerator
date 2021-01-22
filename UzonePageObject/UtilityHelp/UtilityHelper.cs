@@ -83,20 +83,17 @@ namespace UzonePageObject
             System.Diagnostics.Process.Start("CMD.exe", strCmdText);
         }
 
-        public static string[] ConvertListToStringArray(System.Collections.Generic.List<string> list)
+        public static string ConvertListToString(System.Collections.Generic.List<string> list)
         {
-            string[] returnArray = new string[list.Count];
-            int num = 0;
-            System.Collections.IList list1 = list;
+            string returnString = "\nBirthday & Anniversary Seating Map Report. Created on " + 
+                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "\n";            
 
-            for (int i = 0; i < list1.Count; i++)
+            for (int i = 0; i < list.Count; i++)
             {
-                TeamMember tm = (TeamMember)list1[i];
-                returnArray[num] = tm.SkippedNote.ToString();
-                num++;
+                returnString = returnString + "\n" + list[i].ToString();
             }
 
-            return returnArray;
+            return returnString;
         }
 
     }

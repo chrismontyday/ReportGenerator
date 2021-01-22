@@ -20,8 +20,6 @@ namespace UzonePageObject
             By individualLink = By.XPath(@"//a[contains(text(),'" + tm.Name + "')]");
             By profileLink = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/strong[1]/a[1]");
 
-            Log.Information(tm.Name + " GetTeamMemberPhoto() has started.");
-
             try
             {
                 int threeTries = 3;
@@ -42,7 +40,7 @@ namespace UzonePageObject
                         Driver.Navigate().GoToUrl(@"https://uzone.unitedshore.com/user" + tm.PhotoPath);
                         IWebElement photo = Driver.FindElement(profilePicture);
                         tm.PhotoFilePath = util.TakeScreenshotOfElement(Driver, photo, tm.Name, tm.Id, true);
-                        Log.Information(tm.Name + " Screenshot of profile pic element taken successfully");
+                        Log.Information(tm.Name + " Screenshot of profile picture web element taken successfully");
                         break;
                     }
 
@@ -52,8 +50,8 @@ namespace UzonePageObject
                 if (tm.PhotoFilePath == null)
                 {                    
                     tm.Skipped = true;
-                    Log.Information(tm.Name + " was skipped.");
-                    tm.SkippedNote = tm.Name = " was skipped because bot could not find profile.";
+                    Log.Information(tm.Name + " was SKIPPED! ");                    
+                    tm.SkippedNote = tm.Name + " - Skipped because bot could not find profile. ";
                 }
             }
             catch (Exception e)

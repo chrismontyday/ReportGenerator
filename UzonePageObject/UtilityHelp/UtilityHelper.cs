@@ -3,8 +3,6 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 
 namespace UzonePageObject
 {
@@ -13,17 +11,17 @@ namespace UzonePageObject
         public IWebDriver WebDriver;
 
         //Takes a screenshot of an element. 
-        public string TakeScreenshotOfElement(IWebDriver driver, IWebElement element, string name, string floor, int Id, bool person, string fileType = ".jpg")
+        public string TakeScreenshotOfElement(IWebDriver driver, IWebElement element, string name, int Id, bool person, string fileType = ".jpg")
         {
             string fileName;
 
             if (person)
             {
-                fileName = Id + "-" + name.ToLower().Trim() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "-" + floor.ToLower().Trim();
+                fileName = Id + "-" + name.ToLower().Trim() + "-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             }
             else
             {
-                fileName = Id + "-seating_map-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "-" + floor.ToLower().Trim();
+                fileName = Id + "-seating_map-" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
             }
 
             Byte[] byteArray = ((ITakesScreenshot)driver).GetScreenshot().AsByteArray;
@@ -31,7 +29,7 @@ namespace UzonePageObject
             Rectangle croppedImage = new Rectangle(element.Location.X, element.Location.Y, element.Size.Width, element.Size.Height);
             screenshot = screenshot.Clone(croppedImage, screenshot.PixelFormat);
             string path = ReturnPathFolder(3, "TestOutput\\Screenshots");
-            screenshot.Save(path + fileName + fileType, ImageFormat.Jpeg);
+            screenshot.Save(path + fileName + fileType, ImageFormat.Jpeg);            
             
             return path + fileName + fileType;
         }
@@ -39,7 +37,7 @@ namespace UzonePageObject
         public string ReturnPathFolder(int dirsBack = 3, string dirName = "TestOutput")
         {
             string properPath = "";
-            string path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string[] dirs = path.Split('\\');
             int num = dirs.Length - dirsBack;
 
@@ -57,7 +55,7 @@ namespace UzonePageObject
             byte[] arr;
             using (MemoryStream ms = new MemoryStream())
             {
-                img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                img.Save(ms, ImageFormat.Jpeg);
                 arr = ms.ToArray();
             }
 
@@ -84,5 +82,19 @@ namespace UzonePageObject
             strCmdText = "taskkill /f /im excel.exe";
             System.Diagnostics.Process.Start("CMD.exe", strCmdText);
         }
+
+        public static string ConvertListToString(System.Collections.Generic.List<string> list)
+        {
+            string returnString = "\nBirthday & Anniversary Seating Map Report. Created on " + 
+                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + "\n";            
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                returnString = returnString + "\n" + list[i].ToString();
+            }
+
+            return returnString;
+        }
+
     }
 }

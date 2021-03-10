@@ -80,7 +80,7 @@ namespace ExcelConnect
                             Skipped = false
                         };
                         list.Add(teamMember);
-                        Log.Information(teamMember.Name + " has been red from excel sheet.");
+                        Log.Information(teamMember.Name + " has been read from excel sheet.");
                     }
                     else
                     {

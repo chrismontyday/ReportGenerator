@@ -90,7 +90,7 @@ namespace Test
                 Log.Information("Screenshots Folder has been emptied");
 
                 //Sends report in email.
-                Email.SendEMail(emailSubject, emailBody, "CDAY@UWM.COM", "username@email.com", filePath);
+                //Email.SendEMail(emailSubject, emailBody, "CDAY@UWM.COM", "username@email.com", filePath);
                 Log.Information("Email sent successfully!");
 
             }

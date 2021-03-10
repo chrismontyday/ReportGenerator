@@ -98,7 +98,7 @@ namespace Test
 
                         if (tm.Name != null || tm.Skipped == false)
                         {
-                            seatingMap.GetTeamMemberSeatingMap(tm);
+                            seatingMap.GetTeamMemberSeatingMap(tm); 
                         }
                     }
 
@@ -121,6 +121,7 @@ namespace Test
             }
 
             doc.CreateDocument(GetPicsList, skippedNotes);            
+            skippedNotes.Clear();
         }
 
 
@@ -129,8 +130,8 @@ namespace Test
         /// This Method was added to reduce the amount of memory that the bot was using up. It was breaking after about 300 people. 
         /// </summary>
         public void UzoneOrchestrator(List<TeamMember> list)
-        {            
-            List<TeamMember> chunkOfList = new List<TeamMember>();
+        {
+            List<TeamMember> chunkOfList;
             // 175 was chosen because it is known than the bot can handle that amount. 
             int num = 175;
 
@@ -140,6 +141,8 @@ namespace Test
 
                 for (int i = 0; i < timesToSplit; i++)
                 {
+                    chunkOfList = new List<TeamMember>();
+
                     for (int j = 0; j < num; j++)
                     {
                         chunkOfList.Add(list[j]);

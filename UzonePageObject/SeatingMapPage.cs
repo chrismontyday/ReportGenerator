@@ -14,8 +14,8 @@ namespace UzonePageObject
         By searchSeatMap = By.XPath("//input[@id='s2id_autogen1_search']");
         By fullScreen = By.XPath("//body/sk-modalpresenter[1]/sk-modalpresentationlayer[1]");
         By seatingMap = By.XPath("//div[@id='mapContainer']//div[@id='draggable']");
-        By floorNumber = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/h3[1]");
-        By mapSelect = By.XPath("//select[@id='mapSelect']");
+        By floorNumber = By.XPath("/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/h3[1]");
+        
 
         public void GetTeamMemberSeatingMap(TeamMember tm)
         {
@@ -25,18 +25,19 @@ namespace UzonePageObject
                 do
                 {
                     Driver.Navigate().GoToUrl("https://uzone.unitedshore.com/map/#/map/51");
-                    BrowserUtils.WaitForDisplayed(searchBox, 90);
+                    //Wait.Until(Driver => Driver.FindElement(searchBox).Displayed);
+                    BrowserUtils.WaitForDisplayed(searchBox, 15);
                     Driver.FindElement(searchBox).Click();
                     Driver.FindElement(searchSeatMap).SendKeys(tm.Name);
                     Driver.FindElement(searchSeatMap).SendKeys(Keys.Enter);
 
-                    if (BrowserUtils.WaitForVisible(fullScreen, 90))
+                    if (BrowserUtils.WaitForVisible(fullScreen, 10))
                     {
                         Actions action = new Actions(Driver);
                         action.MoveByOffset(0, 0).Click().Perform();
                     }
 
-                    if (BrowserUtils.WaitForVisible(seatingMap, 90))
+                    if (BrowserUtils.WaitForVisible(seatingMap, 10))
                     {
                         IWebElement map = Driver.FindElement(seatingMap);
                         tm.MapFilePath = util.TakeScreenshotOfElement(Driver, map, tm.Name, tm.Id, false);
@@ -45,7 +46,7 @@ namespace UzonePageObject
                         break;
                     }
 
-                } while (threeTries-- != 0 && tm.MapFilePath == null);
+                } while (threeTries-- != 0);
 
                 if (tm.MapFilePath == null)
                 {

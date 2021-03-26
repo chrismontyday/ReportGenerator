@@ -37,9 +37,10 @@ namespace Test
 
                 foreach (TeamMember tm in list)
                 {
-                    string teamLead = tm.Event + "\nTeam Lead: " + tm.Name + "\n";
-                    string subTeam = "\nSub Team: " + tm.SubTeamName +
+                    string teamLead = tm.Event + "\nTeam Lead: " + tm.Name + "\n" ;
+                    string subTeam = "\nLeader's Leader: " + tm.Leader + "\nSub Team: " + tm.SubTeamName +
                         "\nTeam: " + tm.TeamName + "\nFloor: " + tm.Floor;
+                    
 
                     if(tm.Skipped==false && tm.Name != null && tm.MapFilePath != null && tm.PhotoFilePath != null)
                     {

@@ -37,9 +37,10 @@ namespace ExcelConnect
             list = new List<TeamMember>();
 
             int nameColumn = 1;
-            int emailColumn = 2;
-            int teamColumn = 3;
-            int subteamColumn = 4;
+            int leadersLeader = 2;
+            int emailColumn = 3;
+            int teamColumn = 4;
+            int subteamColumn = 5;
 
             for (int i = 1; i < xlRange.Columns.Count + 1; i++)
             {
@@ -61,12 +62,16 @@ namespace ExcelConnect
                 {
                     subteamColumn = i;
                 }
+                else if (columnName.ToLower().Equals("leader s leader"))
+                {
+                    leadersLeader = i;
+                }
             }
 
             try
             {
                 Log.Information("Reading excel sheet");
-                for (int row = 2; row < xlRange.Rows.Count + 1; row++)
+                for (int row = 2; row < xlRange.Rows.Count +1; row++)
                 {
                     if (xlRange.Cells[row, 1] != null)
                     {
@@ -76,6 +81,7 @@ namespace ExcelConnect
                             Email = (xlRange.Cells[row, emailColumn] as Excel.Range).Value2.ToString(),
                             TeamName = (xlRange.Cells[row, teamColumn] as Excel.Range).Value2.ToString(),
                             SubTeamName = (xlRange.Cells[row, subteamColumn] as Excel.Range).Value2.ToString(),
+                            Leader = (xlRange.Cells[row, leadersLeader] as Excel.Range).Value2.ToString(),
                             Id = row,
                             Skipped = false
                         };

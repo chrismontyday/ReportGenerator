@@ -14,5 +14,6 @@
         public string Floor { get; set; }
         public bool Skipped { get; set; }
         public string SkippedNote { get; set; }
+        public string Leader { get; set; }
     }
 }

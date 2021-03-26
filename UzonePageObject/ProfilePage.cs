@@ -18,7 +18,6 @@ namespace UzonePageObject
             By search = By.XPath("//input[@id='txtSearchTerm']");
             By individualLink = By.XPath(@"//a[contains(text(),'" + tm.Name + "')]");
             By noProfile = By.XPath("//td[contains(text(),'Please enter a search term, or select all users from the drop down.')]");
-            By profileLink = By.XPath("/html[1]/body[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/strong[1]/a[1]");
             By image = By.XPath("//body/div[@id='js-body-content']/div[@id='js-content-area-full']/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/sk-profilepicture[1]");
             By profilePicture = By.XPath("//body/img[1]");
 

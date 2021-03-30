@@ -19,7 +19,8 @@ namespace ExcelConnect
 
         public string GetFile()
         {
-            string[] file = Directory.GetFiles(auto.ReturnPathFolder(3, @"Exceldata"));
+            //string[] file = Directory.GetFiles(auto.ReturnPathFolder(3, @"Exceldata"));
+            string[] file = Directory.GetFiles(@"\\dfs\ns1\BYOTL\TeamMembers\Monty\Birthday-Anniversary-Excel-Drop");
             return file[0].ToString();
         }
 

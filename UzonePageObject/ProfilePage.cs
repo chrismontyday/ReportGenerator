@@ -51,8 +51,7 @@ namespace UzonePageObject
                 //if the leader's profile pic could not be found this is where it notes that and skips them. 
                 if (tm.PhotoFilePath == null)
                 {                    
-                    tm.Skipped = true;
-                    Log.Information(tm.Name + " was SKIPPED! ");                    
+                    tm.Skipped = true;                  
                     tm.SkippedNote = tm.Name + " - Skipped because bot could not find profile. ";
                 }
             }

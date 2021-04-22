@@ -61,7 +61,7 @@ namespace Test
             //Login
             LoginUzoneTest();
             //Gets Team Member's Profile Pics & Seating Map 
-            UzoneOrchestrator(list);
+            GetPicsFromUzone(list);
         }
 
         public void LoginUzoneTest()
@@ -106,11 +106,6 @@ namespace Test
                     {
                         skippedNotes.Add(tm.Name + " was skipped. Message:" + tm.SkippedNote);
                         Log.Information(tm.Id + " - Failed...");
-                    }
-                    else
-                    {
-                        Log.Information(tm.Id + " - Success!");
-                        ReportingUtil.test.Pass("GetPics() has passed");
                     }
 
                 }

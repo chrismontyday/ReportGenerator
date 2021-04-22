@@ -21,6 +21,7 @@
   <ItemGroup>
     <Folder Include="Config\" />
     <Folder Include="Reports\" />
+    <Folder Include="TestOutput\Logs\" />
     <Folder Include="TestOutput\Screenshots\" />
   </ItemGroup>
   <ItemGroup>
